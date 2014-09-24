@@ -58,7 +58,7 @@ Install npm and bower dependencies:
 
 ## Acknowledgments
 Based on
-- [angular-marked](https://github.com/Hypercubed/angular-marked) by [briantford](http://briantford.com/) via
+- [angular-marked](https://github.com/Hypercubed/angular-marked) by [Hypercubed](https://github.com/Hypercubed/) via
 - [angular-markdown-directive](https://github.com/btford/angular-markdown-directive) by [briantford](http://briantford.com/) via
 - [this excellent tutorial](http://blog.angularjs.org/2012/05/custom-components-part-1.html) by [@johnlinquist](https://twitter.com/johnlindquist).
 
