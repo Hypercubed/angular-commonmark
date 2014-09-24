@@ -1,0 +1,30 @@
+{
+  "name": "angular-commonmark",
+  "version": "0.0.1",
+  "authors": [
+    "J. Harshbarger"
+  ],
+  "description": "AngularJS Markdown using CommonMark.",
+  "main": "angular-commonmark.js",
+  "keywords": [
+    "angularjs",
+    "markdown",
+    "CommonMark",
+    "directive",
+    "filter"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": ">= 1.2.5"
+  },
+  "devDependencies": {
+    "angular-mocks": ">= 1.2.5"
+  }
+}
