@@ -1,0 +1,35 @@
+<h1><code ng:non-bindable="">commonMark</code>
+<div><span class="hint">service in module <code ng:non-bindable="">hc.commonmark</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="hc-commonmark-service-page hc-commonmark-service-commonmark-page"><p>A reference to the <a href="https://github.com/chjj/marked">CommonMark</a> renderer.</p>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$window">$window</a></code>
+</li>
+</ul>
+<h2 id="example">Example</h2>
+<div class="example"><div class="hc-commonmark-service-page hc-commonmark-service-commonmark-page"><h4 id="example_source">Source</h4>
+<div source-edit="hc.commonmark" source-edit-deps="angular.js .js" source-edit-html=".html" source-edit-css="" source-edit-js=".js" source-edit-json="" source-edit-unit="" source-edit-scenario=""></div>
+<div class="tabbable"><div class="tab-pane" title=".html">
+<pre class="prettyprint linenums" ng-set-text=".html"></pre>
+<script type="text/ng-template" id=".html">
+  <div ng-controller="MainController">
+    html: {{html}}
+  </div>
+</script>
+</div>
+<div class="tab-pane" title=".js">
+<pre class="prettyprint linenums" ng-set-text=".js"></pre>
+<script type="text/ng-template" id=".js">
+  function MainController($scope, commonMark) {
+    $scope.html = commonMark('# TEST');
+  }
+</script>
+</div>
+</div><h4 id="example_demo">Demo</h4>
+<div class="well doc-example-live animate-container" ng-embed-app="hc.commonmark" ng-set-html=".html" ng-eval-javascript=".js"></div>
+</div></div>
+</div>
