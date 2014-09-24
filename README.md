@@ -3,6 +3,8 @@
 
 Render markdown in AngularJS using [CommonMark](http://commonmark.org/); A strongly specified, highly compatible implementation of Markdown.
 
+*Please note: neither this directive nor the CommonMark implementation does any type of sanitization.  As always, sanitizing is necessary for user-generated content.*
+
 [![get this with bower](http://benschwarz.github.io/bower-badges/badge@2x.png)](http://bower.io/ "get this with bower")
 
 ## Usage
