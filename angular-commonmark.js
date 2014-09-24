@@ -26,16 +26,18 @@
 
       Convert markdown to html at run time.  For example:
 
-      <example module="hc.commonmark">
+      <example module="myApp">
         <file name=".html">
           <form ng-controller="MainController">
             Markdown:<br />
             <textarea ng-model="my_markdown" cols="60" rows="5" class="span8" /><br />
             Output:<br />
-            <div common-mark="my_markdown" />
+            <div common-mark="my_markdown"></div>
           </form>
         </file>
         <file  name=".js">
+				  angular.module('myApp', ['hc.commonmark','ngSanitize']);
+
           function MainController($scope) {
             $scope.my_markdown = "*This* **is** [markdown](https://daringfireball.net/projects/markdown/)";
           }
@@ -77,11 +79,17 @@
     //  this.defaults = opts;
     //};
 
-    self.$get = ['$window',function ($window) {
+    self.$get = ['$window','$injector', function ($window, $injector) {
 
 			var commondMark = function commondMark(md) {
-				return commondMark.renderer.render(commondMark.parser.parse(md));
+				return commondMark.sanitizer(commondMark.renderer.render(commondMark.parser.parse(md)));
 			};
+
+			if ($injector.has('$sanitize')) {
+			  commondMark.sanitizer = $injector.get('$sanitize');
+			} else {
+				commondMark.sanitizer = angular.identity;
+			}
 
 			var stmd = $window.stmd;
 			commondMark.renderer = new stmd.HtmlRenderer();
