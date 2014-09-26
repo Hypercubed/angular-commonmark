@@ -71,25 +71,104 @@
     </example>
    **/
 
-  .provider('commonMark', function () {
+   /**
+   * @ngdoc service
+   * @name hc.commonmark.service:commonMarkProvider
+   * @description
+   * Use `commonMarkProvider` to change the default behavior of the {@link hc.commonMark.service:commonMark CommonMark} service.
+   *
+	 * @example
 
-    var self = this;
+		## Example enablening santization using ngSanitize and code highlighting using [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/) (must include angular-sanitize google-code-prettify.js script).  Also works with [highlight.js Javascript syntax highlighter](http://highlightjs.org/).
 
-    //self.setOptions = function(opts) {  // Store options for later
-    //  this.defaults = opts;
-    //};
+		<example module="myApp">
+		<file name=".js">
+			angular.module('myApp', ['hc.commonmark', 'ngSanitize'])
 
-    self.$get = ['$window','$injector', function ($window, $injector) {
+			.config(['commonMarkProvider', function(commonMarkProvider) {
+				commonMarkProvider.setOptions({
+					highlight: function (code) {
+						return prettyPrintOne(code);
+					},
+					sanitize: true
+				});
+			}])
 
-			var commondMark = function commondMark(md) {
-				return commondMark.sanitizer(commondMark.renderer.render(commondMark.parser.parse(md)));
+			.controller('MainController', function MainController($scope) {
+			*   		 	$scope.dangerous_markdown = '<p style="color:blue">an html <em onmouseover="this.textContent=\'PWN3D!\'">click here</em> snippet</p>';
+			* 	 		});
+		</file>
+		<file name=".html">
+			<div ng-controller="MainController">
+				<common-mark>
+			Code blocks styled with [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/)
+			```js
+			angular.module('myApp', ['hc.commonmarked', 'ngSanitize'])
+				.config(['commonMarkProvider', function(commonMarkProvider) {
+					commonMarkProvider.setOptions({
+						highlight: function (code) {
+							return prettyPrintOne(code);
+						},
+						sanitize: true
+					});
+				}]);
+			```
+				</common-mark>
+
+				Sanitized with ngSanitize:
+
+				<textarea ng-model="dangerous_markdown" class="span8"> </textarea>
+				<div common-mark="dangerous_markdown"></div>
+
+			</div>
+		</file>
+		</example>
+  **/
+
+  .provider('commonMark', [function ($injector) {
+
+		var defaultOptions = {
+			sanitize: false,
+			highlight: false
+		};
+
+    this.setOptions = function(opt) {  // Store options for later
+      defaultOptions = angular.extend(defaultOptions, opt || {});
+    };
+
+    this.$get = ['$window','$injector', function ($window, $injector) {
+
+			var commondMark = function commondMark(md, opt) {
+				opt = angular.extend({}, defaultOptions, opt || {});
+
+				var parsed = commondMark.parser.parse(md);
+				var htmlRenderer = commondMark.renderer;
+
+				if (opt.highlight && typeof opt.highlight === 'function') {
+					parsed.children.forEach(function(block) {
+						if (block.t === 'FencedCode') {
+						  var info_words = block.info.split(/ +/);
+              var attr = info_words.length === 0 || info_words[0].length === 0 ?
+                   '' : 'class=language-'+htmlRenderer.escape(info_words[0],true);
+
+							block.string_content = '<pre><code '+attr+'>'+opt.highlight(block.string_content)+'</pre></code>';
+							block.t = 'HtmlBlock';
+						}
+					});
+				};
+
+				var html = htmlRenderer.render(parsed);
+
+				if (opt.sanitize === true && $injector.has('$sanitize')) {
+					opt.sanitize = $injector.get('$sanitize');
+				}
+
+				if (opt.sanitize && typeof opt.sanitize === 'function') {
+          html = opt.sanitize(html);
+				}
+
+				return html;
 			};
-
-			if ($injector.has('$sanitize')) {
-			  commondMark.sanitizer = $injector.get('$sanitize');
-			} else {
-				commondMark.sanitizer = angular.identity;
-			}
 
 			var stmd = $window.stmd;
 			commondMark.renderer = new stmd.HtmlRenderer();
@@ -99,12 +178,7 @@
 
     }];
 
-  })
-
-  // TODO: filter tests */
-  //app.filter('marked', ['marked', function(marked) {
-	//  return marked;
-	//}]);
+  }])
 
   /**
    * @ngdoc directive
@@ -146,10 +220,12 @@
           </form>
         </file>
         <file  name="exampleB.js">
-          * function MainController($scope) {
-          *   $scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
-					*   $scope.my_markdown += ' in a scope variable';
-          * }
+
+					function MainController($scope) {
+	*   		 	$scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
+	*   		 	$scope.my_markdown += ' in a scope variable';
+	* 	 		};
+
         </file>
       </example>
 
