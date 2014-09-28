@@ -14,6 +14,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "hc.commonmark",
+      "shortName": "hc.commonmark",
+      "type": "overview",
+      "moduleName": "hc.commonmark",
+      "shortDescription": "angular-commonmark (core module)",
+      "keywords": "adding angular angular-commonmark api application commonmark dependency hc html include installation js load module overview ready src started yourapp"
+    },
+    {
+      "section": "api",
       "id": "hc.commonmark.directive:commonMark",
       "shortName": "commonMark",
       "type": "directive",
@@ -42,5 +51,10 @@ NG_DOCS={
     "stmd.js",
     "angular-commonmark.js",
     "script.js"
-  ]
+  ],
+  "discussions": {
+    "shortName": "hypercubedgithub",
+    "url": "http://hypercubed.github.io/angular-commonmark/",
+    "dev": false
+  }
 };
