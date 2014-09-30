@@ -9,9 +9,9 @@
 <li><a href="#/api/hc.commonmark.service:commonMark">As a service</a></li>
 </ul>
 </div><h2 id="example">Example</h2>
-<div class="example"><div class="index-page"><p>Convert markdown to html at run time.  For example:</p>
+<div class="example"><div class="index-page"><p>Convert CommonMark to HTML at run time.  For example:</p>
 <h4 id="example_source">Source</h4>
-<div source-edit="hc.commonmark" source-edit-deps="angular.js .js" source-edit-html=".html" source-edit-css="" source-edit-js=".js" source-edit-json="" source-edit-unit="" source-edit-scenario=""></div>
+<div source-edit="myApp" source-edit-deps="angular.js .js" source-edit-html=".html" source-edit-css="" source-edit-js=".js" source-edit-json="" source-edit-unit="" source-edit-scenario=""></div>
 <div class="tabbable"><div class="tab-pane" title=".html">
 <pre class="prettyprint linenums" ng-set-text=".html"></pre>
 <script type="text/ng-template" id=".html">
@@ -19,19 +19,21 @@
       Markdown:<br />
       <textarea ng-model="my_markdown" cols="60" rows="5" class="span8" /><br />
       Output:<br />
-      <div common-mark="my_markdown" />
+      <div common-mark="my_markdown"></div>
     </form>
   </script>
 </div>
 <div class="tab-pane" title=".js">
 <pre class="prettyprint linenums" ng-set-text=".js"></pre>
 <script type="text/ng-template" id=".js">
+angular.module('myApp', ['hc.commonmark','ngSanitize']);
+
     function MainController($scope) {
       $scope.my_markdown = "*This* **is** [markdown](https://daringfireball.net/projects/markdown/)";
     }
   </script>
 </div>
 </div><h4 id="example_demo">Demo</h4>
-<div class="well doc-example-live animate-container" ng-embed-app="hc.commonmark" ng-set-html=".html" ng-eval-javascript=".js"></div>
+<div class="well doc-example-live animate-container" ng-embed-app="myApp" ng-set-html=".html" ng-eval-javascript=".js"></div>
 </div></div>
 </div>

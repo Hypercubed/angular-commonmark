@@ -53,10 +53,12 @@ as attribute<pre class="prettyprint linenums">&lt;any common-mark="{expression}"
 <div class="tab-pane" title="exampleB.js">
 <pre class="prettyprint linenums" ng-set-text="exampleB.js"></pre>
 <script type="text/ng-template" id="exampleB.js">
+
 function MainController($scope) {
-$scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
-$scope.my_markdown += ' in a scope variable';
-}
+	$scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
+	$scope.my_markdown += ' in a scope variable';
+};
+
    </script>
 </div>
 </div><h4 id="example_demo">Demo</h4>
