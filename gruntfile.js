@@ -67,7 +67,12 @@ module.exports = function(grunt){
           './bower_components/angular-sanitize/angular-sanitize.js',
           './<%= pkg.name %>.js',
           './docs-template/script.js',
-        ]
+        ],
+        discussions: {
+          shortName: 'hypercubedgithub',
+          url: 'http://hypercubed.github.io/<%= pkg.name %>/',
+          dev: false
+        }
       },
       all: ['<%= pkg.name %>.js']
     },

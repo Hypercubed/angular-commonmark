@@ -47,6 +47,26 @@
     *
     */
 
+    /**
+     * @ngdoc overview
+     * @name hc.commonmark
+     * @description # angular-commonmark (core module)
+       # Installation
+      First include angular-commonmark.js in your HTML:
+
+      ```js
+        <script src="angular-commonmark.js">
+      ```
+
+      Then load the module in your application by adding it as a dependency:
+
+      ```js
+      angular.module('yourApp', ['hc.commonmark']);
+      ```
+
+      With that you're ready to get started!
+     */
+
   angular.module('hc.commonmark', [])
 
     /**
