@@ -165,15 +165,15 @@
 
     this.$get = ['$window','$injector', '$log', function ($window, $injector, $log) {
 
-			var commondMark = function commondMark(md, opt) {
+			var commonMark = function commonMark(md, opt) {
 				opt = angular.extend({}, defaultOptions, opt || {});
 
-				var parsed = commondMark.parser.parse(md);
-				var htmlRenderer = commondMark.renderer;
+				var parsed = commonMark.parser.parse(md);
+				var htmlRenderer = commonMark.renderer;
 
 				if (opt.highlight && typeof opt.highlight === 'function') {
 					parsed.children.forEach(function(block) {
-						if (block.t === 'FencedCode') {
+						if (block.t === 'CodeBlock') {
 						  var info_words = block.info.split(/ +/);
               var attr = info_words.length === 0 || info_words[0].length === 0 ?
                    '' : 'class=language-'+htmlRenderer.escape(info_words[0],true);
@@ -186,7 +186,7 @@
 
 				var html = htmlRenderer.render(parsed);
 
-				if (opt.sanitize !== false) {
+				if (opt.sanitize !== false ) {
 					if ($injector.has('$sanitize')) {
 						var $sanitize = $injector.get('$sanitize');
 						html = $sanitize(html);
@@ -199,11 +199,10 @@
 				return html;
 			};
 
-			var stmd = $window.stmd;
-			commondMark.renderer = new stmd.HtmlRenderer();
-			commondMark.parser = new stmd.DocParser();
+			commonMark.renderer = new $window.commonmark.HtmlRenderer();
+			commonMark.parser = new $window.commonmark.DocParser();
 
-			return commondMark;
+			return commonMark;
 
     }];
 

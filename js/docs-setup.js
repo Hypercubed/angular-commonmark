@@ -55,16 +55,16 @@ NG_DOCS={
   "html5Mode": false,
   "editExample": true,
   "startPage": "/api",
+  "scripts": [
+    "angular.min.js",
+    "commonmark.js",
+    "angular-sanitize.js",
+    "angular-commonmark.js",
+    "script.js"
+  ],
   "discussions": {
     "shortName": "hypercubedgithub",
     "url": "http://hypercubed.github.io/angular-commonmark/",
     "dev": false
-  },
-  "scripts": [
-    "angular.min.js",
-    "stmd.js",
-    "angular-sanitize.js",
-    "angular-commonmark.js",
-    "script.js"
-  ]
+  }
 };
