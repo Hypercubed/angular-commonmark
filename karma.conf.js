@@ -16,7 +16,7 @@ module.exports = function(config) {
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'angular-CommonMark.js',
-      'lib/stmd.js',
+      'lib/commonmark.js',
       'test/spec/**/*.js'
     ],
 

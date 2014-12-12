@@ -22,7 +22,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": ">= 1.2.5"
+    "angular": ">= 1.2.5",
+    "commonmark": "http://spec.commonmark.org/js/commonmark.js"
   },
   "devDependencies": {
     "angular-mocks": ">= 1.2.5"

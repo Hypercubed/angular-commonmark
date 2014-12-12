@@ -63,7 +63,7 @@ module.exports = function(grunt){
         navTemplate: './docs-template/nav.html',
         scripts: [
           'angular.js',
-          './lib/stmd.js',
+          './lib/commonmark.js',
           //'./bower_components/marked/lib/marked.js',
           './<%= pkg.name %>.js',
           './docs-template/script.js',

@@ -99,15 +99,15 @@
 
     self.$get = ['$window',function ($window) {
 
-			var commondMark = function commondMark(md) {
-				return commondMark.renderer.render(commondMark.parser.parse(md));
+			var cm = function cm(md) {
+				return cm.renderer.render(cm.parser.parse(md));
 			};
 
-			var stmd = $window.stmd;
-			commondMark.renderer = new stmd.HtmlRenderer();
-			commondMark.parser = new stmd.DocParser();
+			var commonmark = $window.commonmark;
+			cm.renderer = new commonmark.HtmlRenderer();
+			cm.parser = new commonmark.DocParser();
 
-			return commondMark;
+			return cm;
 
     }];
 
