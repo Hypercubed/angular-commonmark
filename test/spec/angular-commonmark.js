@@ -85,4 +85,32 @@ describe('Directive: CommonMark,', function () {
     });
   });
 
+  describe('Sanitize,', function () {
+    it('should sanitize', function () {
+      $scope.dangerous_markdown = '<p style="color:blue">an html <em onmouseover="this.textContent=\'PWN3D!\'">click here</em> snippet</p>';
+      element = $compile('<div common-mark="dangerous_markdown" opts="{ sanitize: false }"></div>')($scope);
+      expect(element.html()).toContain('PWN3D');
+
+      element = $compile('<div common-mark="dangerous_markdown" opts="{ sanitize: true }"></div>')($scope);
+      expect(element.html()).not.toContain('PWN3D');
+    });
+  });
+
+  describe('Highlight,', function () {
+    it('should highlight', function () {
+      $scope.mockLight = function(md) {
+        return '<span class="mockLight">'+md+'</span>';
+      };
+      $scope.markdown = "```js\nwhile( true ){\n  alert('Accept to continue');\n}\n```";
+
+      element = $compile('<div common-mark="markdown" opts="{ highlight: false }"></div>')($scope);
+      expect(element.html()).toContain('class="language-js"');
+      expect(element.html()).not.toContain('class="mockLight"');
+
+      element = $compile('<div common-mark="markdown" opts="{ highlight: mockLight }"></div>')($scope);
+      expect(element.html()).toContain('class="language-js"');
+      expect(element.html()).toContain('class="mockLight"');
+    });
+  });
+
 });

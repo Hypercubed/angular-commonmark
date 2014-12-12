@@ -24,18 +24,20 @@
    *
    * @example
 
-      Convert markdown to html at run time.  For example:
+      Convert CommonMark to HTML at run time.  For example:
 
-      <example module="hc.commonmark">
+      <example module="myApp">
         <file name=".html">
           <form ng-controller="MainController">
             Markdown:<br />
             <textarea ng-model="my_markdown" cols="60" rows="5" class="span8" /><br />
             Output:<br />
-            <div common-mark="my_markdown" />
+            <div common-mark="my_markdown"></div>
           </form>
         </file>
         <file  name=".js">
+				  angular.module('myApp', ['hc.commonmark','ngSanitize']);
+
           function MainController($scope) {
             $scope.my_markdown = "*This* **is** [markdown](https://daringfireball.net/projects/markdown/)";
           }
@@ -71,6 +73,8 @@
     * @ngdoc service
     * @name hc.commonmark.service:commonMark
     * @requires $window
+		* @requires $injector
+		* @requires $log
     * @description
     * A reference to the [CommonMark](https://github.com/chjj/marked) renderer.
     *
@@ -89,34 +93,120 @@
     </example>
    **/
 
-  .provider('commonMark', function () {
+   /**
+   * @ngdoc service
+   * @name hc.commonmark.service:commonMarkProvider
+   * @description
+   * Use `commonMarkProvider` to change the default behavior of the {@link hc.commonmark.service:commonMark CommonMark} service.
+   *
+	 * @example
 
-    var self = this;
+		## Example enablening santization using [ngSanitize](https://docs.angularjs.org/api/ngSanitize) and code highlighting using [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/) (must include angular-sanitize google-code-prettify.js script).  Also works with [highlight.js Javascript syntax highlighter](http://highlightjs.org/).
 
-    //self.setOptions = function(opts) {  // Store options for later
-    //  this.defaults = opts;
-    //};
+		<example module="myApp">
+		<file name=".js">
+			angular.module('myApp', ['hc.commonmark','ngSanitize'])
 
-    self.$get = ['$window',function ($window) {
+			.config(['commonMarkProvider', function(commonMarkProvider) {
+			  commonMarkProvider.setOptions({
+			    highlight: function (code) {
+			      return prettyPrintOne(code);
+			    },
+			    sanitize: true
+			  });
+			}])
 
-			var cm = function cm(md) {
-				return cm.renderer.render(cm.parser.parse(md));
+			.controller('MainController', function MainController($scope) {
+			*      $scope.dangerous_markdown = '<p style="color:blue">an html <em onmouseover="this.textContent=\'PWN3D!\'">click here</em> snippet</p>';
+			*    });
+		</file>
+		<file name=".html">
+			<div ng-controller="MainController">
+			  <common-mark>
+			Code blocks styled with [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/)
+			```js
+			while( true ){
+			  alert('Accept to continue');
+			}
+			```
+			  </common-mark>
+
+			  Sanitized with ngSanitize:
+
+			  <textarea ng-model="dangerous_markdown" class="span8"> </textarea>
+			  <div common-mark="dangerous_markdown"></div>
+
+			</div>
+		</file>
+		</example>
+  **/
+
+  .provider('commonMark', [function () {
+
+		var defaultOptions = {
+			sanitize: false,
+			highlight: false
+		};
+
+		/**
+     * @ngdoc method
+     * @name commonMarkProvider#setOptions
+     * @methodOf hc.commonmark.service:commonMarkProvider
+     *
+     * @param {object} opts Default options for angular-commonmark service.  Valid keys are:
+		 *
+		 *   - `sanitize`: `boolean` value indicating if [ngSanitize](https://docs.angularjs.org/api/ngSanitize) should be used to sanitize html output.  If set to ture ngSanitize must ne added to the module dependecnies or outputwill be disabled.
+		 *   - `highlight`: a `function` to highlight code blocks.
+     */
+
+    this.setOptions = function(opt) {  // Store options for later
+      defaultOptions = angular.extend(defaultOptions, opt || {});
+    };
+
+    this.$get = ['$window','$injector', '$log', function ($window, $injector, $log) {
+
+			var commonMark = function commonMark(md, opt) {
+				opt = angular.extend({}, defaultOptions, opt || {});
+
+				var parsed = commonMark.parser.parse(md);
+				var htmlRenderer = commonMark.renderer;
+
+				if (opt.highlight && typeof opt.highlight === 'function') {
+					parsed.children.forEach(function(block) {
+						if (block.t === 'CodeBlock') {
+						  var info_words = block.info.split(/ +/);
+              var attr = info_words.length === 0 || info_words[0].length === 0 ?
+                   '' : 'class=language-'+htmlRenderer.escape(info_words[0],true);
+
+							block.string_content = '<pre><code '+attr+'>'+opt.highlight(block.string_content)+'</pre></code>';
+							block.t = 'HtmlBlock';
+						}
+					});
+				}
+
+				var html = htmlRenderer.render(parsed);
+
+				if (opt.sanitize !== false ) {
+					if ($injector.has('$sanitize')) {
+						var $sanitize = $injector.get('$sanitize');
+						html = $sanitize(html);
+					} else {
+						$log.error('angular-commonmark:', 'Add \'ngSanitize\' to your module dependencies');
+						html = '';
+					}
+				}
+
+				return html;
 			};
 
-			var commonmark = $window.commonmark;
-			cm.renderer = new commonmark.HtmlRenderer();
-			cm.parser = new commonmark.DocParser();
+			commonMark.renderer = new $window.commonmark.HtmlRenderer();
+			commonMark.parser = new $window.commonmark.DocParser();
 
-			return cm;
+			return commonMark;
 
     }];
 
-  })
-
-  // TODO: filter tests */
-  //app.filter('marked', ['marked', function(marked) {
-	//  return marked;
-	//}]);
+  }])
 
   /**
    * @ngdoc directive
@@ -158,10 +248,12 @@
           </form>
         </file>
         <file  name="exampleB.js">
-          * function MainController($scope) {
-          *   $scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
-					*   $scope.my_markdown += ' in a scope variable';
-          * }
+
+					function MainController($scope) {
+	*   		 	$scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
+	*   		 	$scope.my_markdown += ' in a scope variable';
+	* 	 		};
+
         </file>
       </example>
 

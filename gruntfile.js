@@ -64,7 +64,7 @@ module.exports = function(grunt){
         scripts: [
           'angular.js',
           './lib/commonmark.js',
-          //'./bower_components/marked/lib/marked.js',
+          './bower_components/angular-sanitize/angular-sanitize.js',
           './<%= pkg.name %>.js',
           './docs-template/script.js',
         ],
