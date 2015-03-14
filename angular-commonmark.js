@@ -172,16 +172,21 @@
 				var htmlRenderer = commonMark.renderer;
 
 				if (opt.highlight && typeof opt.highlight === 'function') {
-					parsed.children.forEach(function(block) {
-						if (block.t === 'CodeBlock') {
+
+					var walker = parsed.walker(), event, block;
+
+					while (event = walker.next()) {
+						block = event.node;
+						if (block.type === 'CodeBlock') {
 						  var info_words = block.info.split(/ +/);
               var attr = info_words.length === 0 || info_words[0].length === 0 ?
                    '' : 'class=language-'+htmlRenderer.escape(info_words[0],true);
 
-							block.string_content = '<pre><code '+attr+'>'+opt.highlight(block.string_content)+'</pre></code>';
-							block.t = 'HtmlBlock';
+							block.literal = '<pre><code '+attr+'>'+opt.highlight(block.literal)+'</pre></code>';
+							block._type = 'HtmlBlock';
 						}
-					});
+					}
+
 				}
 
 				var html = htmlRenderer.render(parsed);
@@ -200,7 +205,7 @@
 			};
 
 			commonMark.renderer = new $window.commonmark.HtmlRenderer();
-			commonMark.parser = new $window.commonmark.DocParser();
+			commonMark.parser = new $window.commonmark.Parser();
 
 			return commonMark;
 
