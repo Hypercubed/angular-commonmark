@@ -9,7 +9,7 @@ Render markdown in AngularJS using [CommonMark](http://commonmark.org/); A stron
 
 ## Usage
 1. `bower install Hypercubed/angular-commonmark`
-2. Include the `commonmarkjs` script into your app.  By default should be at `bower_components/commonmark/index.js`.
+2. Include the `commonmarkjs` script into your app.  By default should be at `bower_components/commonmark/dist/commonmark.js`.
 3. Include the `angular-CommonMark.js` into your app.  By default should be at `bower_components/angular-commonmark/angular-commonmark.js`.
 4. Add `hc.commonmark` as a module dependency to your app.
 
