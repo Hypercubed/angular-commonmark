@@ -1,0 +1,50 @@
+<h1><code ng:non-bindable="">commonMarkedProvider</code>
+<div><span class="hint">service in module <code ng:non-bindable="">hc.marked</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="hc-marked-service-page hc-marked-service-commonmarkedprovider-page"><p>Use <code>commonMarkedProvider</code> to change the default behavior of the <a href="#/api/hc.marked.service:marked">CommonMark</a> service.</p>
+</div></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="hc-marked-service-page hc-marked-service-commonmarkedprovider-page"><h4 id="example_example-using">Example using <a href="https://code.google.com/p/google-code-prettify/">google-code-prettify syntax highlighter</a> (must include google-code-prettify.js script).  Also works with <a href="http://highlightjs.org/">highlight.js Javascript syntax highlighter</a>.</h4>
+<h4 id="example_source">Source</h4>
+<div source-edit="myApp" source-edit-deps="angular.js .js" source-edit-html=".html" source-edit-css="" source-edit-js=".js" source-edit-json="" source-edit-unit="" source-edit-scenario=""></div>
+<div class="tabbable"><div class="tab-pane" title=".html">
+<pre class="prettyprint linenums" ng-set-text=".html"></pre>
+<script type="text/ng-template" id=".html">
+	<marked>
+	```js
+	angular.module('myApp', ['hc.marked'])
+		.config(['markedProvider', function(markedProvider) {
+			markedProvider.setOptions({
+				gfm: true,
+				tables: true,
+				highlight: function (code) {
+					return prettyPrintOne(code);
+				}
+			});
+		}]);
+	```
+	</marked>
+</script>
+</div>
+<div class="tab-pane" title=".js">
+<pre class="prettyprint linenums" ng-set-text=".js"></pre>
+<script type="text/ng-template" id=".js">
+angular.module('myApp', ['hc.marked'])
+	.config(['markedProvider', function(markedProvider) {
+		markedProvider.setOptions({
+			gfm: true,
+			tables: true,
+			highlight: function (code) {
+				return prettyPrintOne(code);
+			}
+		});
+	}]);
+</script>
+</div>
+</div><h4 id="example_demo">Demo</h4>
+<div class="well doc-example-live animate-container" ng-embed-app="myApp" ng-set-html=".html" ng-eval-javascript=".js"></div>
+</div></div>
+</div>
