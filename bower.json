@@ -1,6 +1,6 @@
 {
   "name": "angular-commonmark",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "authors": [
     "J. Harshbarger"
   ],
@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "angular": ">= 1.2.5",
-    "commonmark": "~0.18.1"
+    "commonmark": "~0.19.0"
   },
   "devDependencies": {
     "angular-mocks": ">= 1.2.5",
